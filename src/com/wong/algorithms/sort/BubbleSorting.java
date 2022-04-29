@@ -26,7 +26,7 @@ public class BubbleSorting {
                 break;
         }
 
-        Arrays.stream(number).forEach(x-> System.out.println(x));
+        Arrays.stream(number).forEach(System.out::println);
     }
 
     // time complexity = o(n)
