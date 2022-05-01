@@ -31,7 +31,7 @@ public class SelectionSort {
 
         }
 
-        Arrays.stream(number).forEach(System.out::println);
+        System.out.println(Arrays.toString(number));
     }
 
     // time complexity = o(n)

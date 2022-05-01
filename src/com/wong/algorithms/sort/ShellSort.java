@@ -52,7 +52,7 @@ public class ShellSort {
         long tDelta = tEnd - tStart;
         double elapsedSeconds = tDelta / 1000.0;
 
-        Arrays.stream(arr).forEach(System.out::println);
+        System.out.println(Arrays.toString(arr));
         System.out.println(elapsedSeconds);
     }
 
@@ -87,7 +87,7 @@ public class ShellSort {
         long tDelta = tEnd - tStart;
         double elapsedSeconds = tDelta / 1000.0;
 
-        Arrays.stream(arr).forEach(System.out::println);
+        System.out.println(Arrays.toString(arr));
         System.out.println(elapsedSeconds);
     }
 }
