@@ -2,11 +2,38 @@ package com.wong.data_structures.nonlinear.tree;
 
 public class ThreadedBinaryTreeDemo
 {
+    public static void main(String[] args)
+    {
+        Node node1 = new Node(1,"tom");
+        Node node2 = new Node(3,"jack");
+        Node node3 = new Node(6,"smith");
+        Node node4 = new Node(8,"mary");
+        Node node5 = new Node(10,"king");
+        Node node6 = new Node(14,"dim");
 
+        node1.setLeft(node2);
+        node1.setRight(node3);
+        node2.setLeft(node4);
+        node2.setRight(node5);
+        node3.setLeft(node6);
+
+        ThreadedBinaryTree tree = new ThreadedBinaryTree();
+
+        tree.threadedNodes(node1);
+
+        //mid order traverse result = {8,3,10,1,14,6}
+        System.out.println(node5.getLeft());
+        System.out.println(node5.getRight());
+
+
+        System.out.println("Threaded way to traverse Threaded Binary Tree");
+        tree.setRoot(node1);
+        tree.threadedList();
+    }
 }
 
 // Threaded Binary Tree is the tree that child node have null pointer pointing
-// Idea of threaded binary trees is to make effectively manage the space,  when a binary tree consists of n nodes then n+1 link pointer contain NULL value
+// Idea of threaded binary trees is to make effectively manage the space and increase efficiency, when a binary tree consists of n nodes then n+1 link pointer contain NULL value
 // N node have 2n-(n-1) = n+1 null pointer
 // those N node null pointer use to point back to node in any order traverse, we called it 线索化
 // by order traverse result, one node previous node call predecessor node, one node after node call successor node
@@ -19,6 +46,30 @@ class ThreadedBinaryTree
     public void setRoot(Node root)
     {
         this.root = root;
+    }
+
+    // traverse threaded tree by iterative
+    public void threadedList()
+    {
+        Node node = root;
+        while (node != null)
+        {
+            //when lefttype ==1, means current node is 线索化 after handle effective node
+            while(node.getLeftType() == 0)
+            {
+                node = node.getLeft();
+            }
+            System.out.println(node);
+            // if current node right pointer is successor, keep output
+            while(node.getRightType() == 1)
+            {
+                node = node.getRight();
+                System.out.println(node);
+            }
+            // replace traverse node
+            node = node.getRight(); // this actually is node.next.next when after found the right type is tree or 1,
+
+        }
     }
 
     // here implemented 线索化
@@ -41,12 +92,12 @@ class ThreadedBinaryTree
         if(node.getLeft() == null)
         {
 
-            node.left = pre;  // let current node left pointer point to predecessor node
-            node.leftType = 1; // change current node left type, 0 is tree, 1 is node
+            node.setLeft(pre);  // let current node left pointer point to predecessor node
+            node.setLeftType(1);; // change current node left type, 0 is tree, 1 is node, type might be null
         }
 
         //handle current node successor node
-        if(pre != null || pre.getRight() == null)
+        if(pre != null && pre.getRight() == null)
         {
             pre.setRight(node);
             pre.setRightType(1);
