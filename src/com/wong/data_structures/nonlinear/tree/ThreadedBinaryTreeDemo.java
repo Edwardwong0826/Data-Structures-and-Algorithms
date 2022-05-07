@@ -4,12 +4,12 @@ public class ThreadedBinaryTreeDemo
 {
     public static void main(String[] args)
     {
-        Node node1 = new Node(1,"tom");
-        Node node2 = new Node(3,"jack");
-        Node node3 = new Node(6,"smith");
-        Node node4 = new Node(8,"mary");
-        Node node5 = new Node(10,"king");
-        Node node6 = new Node(14,"dim");
+        tbtNode node1 = new tbtNode(1,"tom");
+        tbtNode node2 = new tbtNode(3,"jack");
+        tbtNode node3 = new tbtNode(6,"smith");
+        tbtNode node4 = new tbtNode(8,"mary");
+        tbtNode node5 = new tbtNode(10,"king");
+        tbtNode node6 = new tbtNode(14,"dim");
 
         node1.setLeft(node2);
         node1.setRight(node3);
@@ -40,10 +40,10 @@ public class ThreadedBinaryTreeDemo
 // it may point to predecessor, successor, left tree or right tree
 class ThreadedBinaryTree
 {
-    private Node root;
-    private Node pre = null; // must have node point to previous node
+    private tbtNode root;
+    private tbtNode pre = null; // must have node point to previous node
 
-    public void setRoot(Node root)
+    public void setRoot(tbtNode root)
     {
         this.root = root;
     }
@@ -51,7 +51,7 @@ class ThreadedBinaryTree
     // traverse threaded tree by iterative
     public void threadedList()
     {
-        Node node = root;
+        tbtNode node = root;
         while (node != null)
         {
             //when lefttype ==1, means current node is 线索化 after handle effective node
@@ -73,7 +73,7 @@ class ThreadedBinaryTree
     }
 
     // here implemented 线索化
-    public void threadedNodes(Node node)
+    public void threadedNodes(tbtNode node)
     {
         if(node == null)
         {
@@ -111,11 +111,11 @@ class ThreadedBinaryTree
 
     }
 
-    private Node addRecursive(Node current, int value, String name)
+    private tbtNode addRecursive(tbtNode current, int value, String name)
     {
 
         if (current == null) {
-            return new Node(value, name);
+            return new tbtNode(value, name);
         }
 
         if (value < current.no) {
@@ -188,7 +188,7 @@ class ThreadedBinaryTree
         }
     }
 
-    public Node preOrderSearch(int no)
+    public tbtNode preOrderSearch(int no)
     {
         if(root != null)
         {
@@ -201,7 +201,7 @@ class ThreadedBinaryTree
 
     }
 
-    public Node midOrderSearch(int no)
+    public tbtNode midOrderSearch(int no)
     {
         if(root != null)
         {
@@ -214,7 +214,7 @@ class ThreadedBinaryTree
 
     }
 
-    public Node postOrderSearch(int no)
+    public tbtNode postOrderSearch(int no)
     {
         if(root != null)
         {
@@ -230,17 +230,17 @@ class ThreadedBinaryTree
 
 }
 
-class Node
+class tbtNode
 {
     int no;
     String name;
-    Node left;
-    Node right;
+    tbtNode left;
+    tbtNode right;
     int leftType; // left type == 0 means point to left tree, if 1 point to predecessor
     int rightType;// right type == 0 means point to right tree, if 1 point to successor
 
 
-    public Node(int no, String name) {
+    public tbtNode(int no, String name) {
         this.no = no;
         this.name = name;
     }
@@ -261,19 +261,19 @@ class Node
         this.name = name;
     }
 
-    public Node getLeft() {
+    public tbtNode getLeft() {
         return left;
     }
 
-    public void setLeft(Node left) {
+    public void setLeft(tbtNode left) {
         this.left = left;
     }
 
-    public Node getRight() {
+    public tbtNode getRight() {
         return right;
     }
 
-    public void setRight(Node right) {
+    public void setRight(tbtNode right) {
         this.right = right;
     }
 
@@ -357,11 +357,11 @@ class Node
         System.out.println(this);
     }
 
-    public Node preOrderSearch(int no) {
+    public tbtNode preOrderSearch(int no) {
         if(this.no == no) {
             return this;
         }
-        Node node = null;
+        tbtNode node = null;
         if(this.left != null) {
             node = this.left.preOrderSearch(no);
         }
@@ -377,9 +377,9 @@ class Node
         return node;
     }
 
-    public Node midOrderSearch(int no) {
+    public tbtNode midOrderSearch(int no) {
 
-        Node node = null;
+        tbtNode node = null;
         if(this.left != null) {
             node = this.left.midOrderSearch(no);
         }
@@ -399,9 +399,9 @@ class Node
         return node;
     }
 
-    public Node postOrderSearch(int no) {
+    public tbtNode postOrderSearch(int no) {
 
-        Node node = null;
+        tbtNode node = null;
         if(this.left != null) {
             node = this.left.postOrderSearch(no);
         }
