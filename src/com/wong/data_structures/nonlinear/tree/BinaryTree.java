@@ -1,6 +1,5 @@
 package com.wong.data_structures.nonlinear.tree;
 
-import com.sun.source.tree.Tree;
 
 public class BinaryTree
 {
@@ -23,9 +22,9 @@ public class BinaryTree
             return new TreeNode(value, name);
         }
 
-        if (value < current.no) {
+        if (value < current.val) {
             current.left = addRecursive(current.left, value, name);
-        } else if (value > current.no) {
+        } else if (value > current.val) {
             current.right = addRecursive(current.right, value, name);
         } else {
             // value already exists
@@ -177,22 +176,25 @@ public class BinaryTree
 
 class TreeNode
 {
-    int no;
+    int val;
     String name;
     TreeNode left;
     TreeNode right;
 
-    public TreeNode(int no, String name) {
-        this.no = no;
-        this.name = name;
+    public TreeNode(int no) {
+        this.val = no;
     }
 
+    public TreeNode(int no, String name) {
+        this.val = no;
+        this.name = name;
+    }
     public int getNo() {
-        return no;
+        return val;
     }
 
     public void setNo(int no) {
-        this.no = no;
+        this.val = no;
     }
 
     public String getName() {
@@ -222,19 +224,19 @@ class TreeNode
     @Override
     public String toString() {
         return "TreeNode{" +
-                "no=" + no +
+                "no=" + val +
                 ", name='" + name + '\'' +
                 '}';
     }
 
     public void delNode(int no) {
 
-        if(this.left != null && this.left.no == no) {
+        if(this.left != null && this.left.val == no) {
             this.left = null;
             return;
         }
 
-        if(this.right != null && this.right.no == no) {
+        if(this.right != null && this.right.val == no) {
             this.right = null;
             return;
         }
@@ -284,7 +286,7 @@ class TreeNode
     }
 
     public TreeNode preOrderSearch(int no) {
-        if(this.no == no) {
+        if(this.val == no) {
             return this;
         }
         TreeNode node = null;
@@ -314,7 +316,7 @@ class TreeNode
             return node;
         }
 
-        if(this.no == no) {
+        if(this.val == no) {
             return this;
         }
 
@@ -344,7 +346,7 @@ class TreeNode
             return node;
         }
 
-        if(this.no == no) {
+        if(this.val == no) {
             return this;
         }
 
