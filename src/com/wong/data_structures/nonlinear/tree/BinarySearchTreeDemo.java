@@ -33,7 +33,7 @@ public class BinarySearchTreeDemo
 
 class BinarySearchTree
 {
-    private Node root;
+    public Node root;
 
     public Node search(int value)
     {
@@ -230,6 +230,45 @@ class Node
         this.value = value;
     }
 
+    // return current node height
+    public int height() {
+        return Math.max(left == null? 0 : left.height(), right == null? 0 :right.height()) + 1;
+    }
+
+    // return left tree height
+    public int leftHeight() {
+        if(left == null)
+            return 0;
+        return left.height();
+    }
+
+    // return right tree height
+    public int rightHeight() {
+        if(right == null)
+            return 0;
+        return right.height();
+    }
+
+    public void leftRotate() {
+        // create a new node based by current node value
+        Node newNode = new Node(value);
+
+        // set new node left tree by current node left tree
+        newNode.left = this.left;
+
+        // set new node right tree by current node left tree->right tree
+        newNode.right = this.right.left;
+
+        // set current value as right node value
+        value = this.right.value;
+
+        // set current node right tree by current node right tree -> right tree
+        right = this.right.right;
+
+        // set current node left tree as new node
+        left = newNode;
+    }
+
     // use recursion way to add, and fulfill the BST requirement
     // 1. if add node value smaller than node, add to left
     // 2. else add node value greater than node, add to right
@@ -264,6 +303,11 @@ class Node
                 // recursive add to right tree
                 this.right.add(node);
             }
+        }
+
+        // when after add node, if right tree height > left tree height more than 1, then left rotate
+        if(rightHeight() - leftHeight() > 1) {
+            leftRotate();
         }
 
 
