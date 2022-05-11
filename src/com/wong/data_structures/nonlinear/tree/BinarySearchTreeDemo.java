@@ -33,7 +33,7 @@ public class BinarySearchTreeDemo
 
 class BinarySearchTree
 {
-    public Node root;
+    private Node root;
 
     public Node search(int value)
     {

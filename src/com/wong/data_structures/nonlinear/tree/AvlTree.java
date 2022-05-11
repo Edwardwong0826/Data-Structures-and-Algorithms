@@ -1,9 +1,35 @@
 package com.wong.data_structures.nonlinear.tree;
 
 public class AvlTree extends BinarySearchTree{
-
+    private AVvlNode root;
     // AVL tree also called self-balancing tree, is a binary search tree that optimise that efficiency of traverse operations
     // by rotate the left tree or right tree, when either tree height is > 1, AVL must be empty tree or both tree height cannot > 1
+
+    public void add(AVvlNode node)
+    {
+        if(root == null)
+        {
+            root = node;
+        }
+        else
+        {
+            root.add(node);
+        }
+
+    }
+
+    @Override
+    public void inOrder()
+    {
+        if(root != null)
+        {
+            root.inOrder();
+        }
+        else
+        {
+            System.out.println("AVL Search Tree is empty, cannot traverse");
+        }
+    }
 
     public static void main(String[] args) {
         //int[] arr = {4,3,6,5,7,8};
@@ -11,22 +37,19 @@ public class AvlTree extends BinarySearchTree{
         AvlTree avlTree = new AvlTree();
         for(int i = 0; i < arr2.length; i++)
         {
-            avlTree.add(new Node(arr2[i]));
+            avlTree.add(new AVvlNode(arr2[i]));
         }
 
         avlTree.inOrder();
         System.out.println(avlTree.root.height());
         System.out.println(avlTree.root.leftHeight());
         System.out.println(avlTree.root.rightHeight());
+        System.out.println();
 
         // below is after add, and rotate the root tree accordingly
         System.out.println(avlTree.root.value);
         System.out.println(avlTree.root.left);
 
-        // when we want to right rotate
-        // 1. if current node left tree -> right tree height higher than current node left tree -> left tree
-        // 2. then we first left rotate current node left tree
-        // 3. last continue right rotate at current node
 
     }
 }
@@ -125,6 +148,17 @@ class AVvlNode {
             }
         }
 
+//        if(right != null && right.leftHeight() > right.rightHeight()){
+//            // first right rotate its child right tree
+//            right.rightRotate();
+//            leftRotate();
+//        }
+//        else{
+//            leftRotate();
+//        }
+//
+//        return;
+
         // when after add node, if right tree height > left tree height more than 1, then left rotate
         if (rightHeight() - leftHeight() > 1) {
 
@@ -132,20 +166,24 @@ class AVvlNode {
             if(right != null && right.leftHeight() > right.rightHeight()){
                 // first right rotate its child right tree
                 right.rightRotate();
+
             }
+                leftRotate();
+        }
 
-            leftRotate();
-
-
-        } else if (leftHeight() - rightHeight() > 1) {
+        // when we want to right rotate
+        // 1. if current node left tree -> right tree height higher than current node left tree -> left tree
+        // 2. then we first left rotate current node left tree
+        // 3. last continue right rotate at current node
+        if (leftHeight() - rightHeight() > 1) {
 
             //if its child left tree -> right tree larger than left tree -> left tree height
             if(left != null && left.rightHeight() > left.leftHeight()) {
                 // first left rotate its child left tree
                 left.leftRotate();
-            }
 
-            rightRotate(); // this is rotate for current node
+            }
+                rightRotate(); // this is rotate for current node
 
         }
 
