@@ -19,10 +19,20 @@ public class AvlTree extends BinarySearchTree{
         System.out.println(avlTree.root.leftHeight());
         System.out.println(avlTree.root.rightHeight());
 
+        // below is after add, and rotate the root tree accordingly
+        System.out.println(avlTree.root.value);
+        System.out.println(avlTree.root.left);
+
+        // when we want to right rotate
+        // 1. if current node left tree -> right tree height higher than current node left tree -> left tree
+        // 2. then we first left rotate current node left tree
+        // 3. last continue right rotate at current node
+
     }
 }
 
 class AVvlNode {
+
     int value;
     AVvlNode left;
     AVvlNode right;
@@ -117,11 +127,27 @@ class AVvlNode {
 
         // when after add node, if right tree height > left tree height more than 1, then left rotate
         if (rightHeight() - leftHeight() > 1) {
-            leftRotate();
-        } else if (leftHeight() - rightHeight() > 1) {
-            rightRotate();
-        }
 
+            //if its child right tree -> left tree larger than right tree -> right tree height
+            if(right != null && right.leftHeight() > right.rightHeight()){
+                // first right rotate its child right tree
+                right.rightRotate();
+            }
+
+            leftRotate();
+
+
+        } else if (leftHeight() - rightHeight() > 1) {
+
+            //if its child left tree -> right tree larger than left tree -> left tree height
+            if(left != null && left.rightHeight() > left.leftHeight()) {
+                // first left rotate its child left tree
+                left.leftRotate();
+            }
+
+            rightRotate(); // this is rotate for current node
+
+        }
 
     }
 
