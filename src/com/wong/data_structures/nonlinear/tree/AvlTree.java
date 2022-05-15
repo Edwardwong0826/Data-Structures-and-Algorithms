@@ -5,6 +5,23 @@ public class AvlTree extends BinarySearchTree{
     // AVL tree also called self-balancing tree, is a binary search tree that optimise that efficiency of traverse operations
     // by rotate the left tree or right tree, when either tree height is > 1, AVL must be empty tree or both tree height cannot > 1
 
+//    public int height(TreeNode root) {
+//        return Math.max(root.left == null ? 0 : root.left.height(), root.right == null ? 0 : root.right.height()) + 1;
+//    }
+//
+//    public int leftHeight(TreeNode root) {
+//        if(root == null)
+//            return 0;
+//        return height(root.left);
+//    }
+//
+//    public int rightHeight(TreeNode root) {
+//        if(root == null)
+//            return 0;
+//        return height(root.right);
+//
+//    }
+
     public void add(AVvlNode node)
     {
         if(root == null)

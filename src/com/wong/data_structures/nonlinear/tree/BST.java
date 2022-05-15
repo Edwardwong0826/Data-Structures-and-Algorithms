@@ -71,6 +71,22 @@ class BST
         return cur;
     }
 
+    // convert sort array to BST
+    public TreeNode helper(int[] num, int low, int high) {
+        if (low > high) { // Done
+            return null;
+        }
+        int mid = (low+high) / 2;
+        TreeNode root = new TreeNode(num[mid]);
+        root.left = helper(num, low, mid-1);
+        root.right = helper(num, mid+1, high);
+
+        return root;
+
+
+    }
+
+
     public static void main(String[] args)
     {
         //int[] arr = {4,2,7,1,3};

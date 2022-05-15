@@ -364,6 +364,7 @@ class Node
     }
 
     // inOrder traverse in Binary Search Tree will return ascending result
+    // this is DFS recursive way to traverse
     public void inOrder()
     {
         if(this.left != null)
