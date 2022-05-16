@@ -12,6 +12,7 @@ public class Main {
         System.out.println(removeElement(nums2,3));
     }
 
+    // Leetcode question and submitted solution
     // Question 26 Remove Duplicates from Sorted Array
     public static int removeDuplicates(int[] nums) {
 
@@ -35,7 +36,7 @@ public class Main {
         return i;
     }
 
-    // Qustion 34 Find First and Last Position of Element in Sorted Array
+    // Qustion 34 Find First and Last Position of Element in Sorted Array - binary search and array
     public int[] searchRange(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
@@ -81,6 +82,56 @@ public class Main {
         }
         return ans;
 
+    }
+
+    // Question 41 First Missing Positive - array
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        //遍历每个数字
+        for (int i = 0; i < n; i++) {
+            //判断交换回来的数字
+            while (nums[i] > 0 && nums[i] <= n && nums[i] != nums[nums[i] - 1]) {
+                //第 nums[i] 个位置的下标是 nums[i] - 1
+                swap(nums, i, nums[i] - 1);
+            }
+        }
+        //找出第一个 nums[i] != i + 1 的位置
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        //如果之前的数都满足就返回 n + 1
+        return n + 1;
+
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // Question 547 Number of Provinces - graph DFS
+    public int findCircleNum(int[][] isConncted) {
+        int[] isVisited = new int[isConncted.length];
+        int count = 0;
+        for (int i = 0; i < isConncted.length; i++) {
+            if (isVisited[i] == 0) {
+                dfs(isConncted, isVisited, i);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void dfs(int[][] isConncted, int[] isVisited, int i) {
+        for (int j = 0; j < isConncted.length; j++) {
+            if (isConncted[i][j] == 1 && isVisited[j] == 0) {
+                isVisited[j] = 1;
+                dfs(isConncted, isVisited, j);
+            }
+        }
     }
 
 }
