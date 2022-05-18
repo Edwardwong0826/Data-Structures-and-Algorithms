@@ -84,7 +84,7 @@ public class Main {
 
     }
 
-    //Question Maximum Subarray - Kadane's Algorithm
+    //Question 53 Maximum Subarray - Kadane's Algorithm - iterative DP
     public int maxSubArray(int[] nums) {
         int max = Integer.MIN_VALUE, sum = 0;
         for(int i=0; i< nums.length; i++){
