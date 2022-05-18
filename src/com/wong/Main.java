@@ -84,6 +84,19 @@ public class Main {
 
     }
 
+    //Question Maximum Subarray - Kadane's Algorithm
+    public int maxSubArray(int[] nums) {
+        int max = Integer.MIN_VALUE, sum = 0;
+        for(int i=0; i< nums.length; i++){
+            sum += nums[i];
+            max = Math.max(sum,max);
+
+            if(sum < 0)
+                sum = 0;
+        }
+        return max;
+    }
+
     // Question 41 First Missing Positive - array
     public int firstMissingPositive(int[] nums) {
         int n = nums.length;
@@ -112,6 +125,32 @@ public class Main {
         nums[j] = temp;
     }
 
+    // Qustion 108 Convert Sorted Array to Binary Search Tree
+    public TreeNode sortedArrayToBST(int[] arr) {
+
+        if(arr == null)
+            return null;
+
+        return bst(arr, 0, arr.length-1);
+    }
+
+    public TreeNode bst(int[]arr, int left, int right){
+        if(left > right)
+            return null;
+
+        int mid = (left + right) / 2;
+
+        TreeNode node = new TreeNode(arr[mid]);
+
+        node.left = bst(arr, left, mid-1);
+        node.right = bst(arr, mid+1, right) ;
+
+        return node;
+
+    }
+
+
+
     // Question 547 Number of Provinces - graph DFS
     public int findCircleNum(int[][] isConncted) {
         int[] isVisited = new int[isConncted.length];
@@ -135,3 +174,16 @@ public class Main {
     }
 
 }
+
+class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode() {}
+      TreeNode(int val) { this.val = val; }
+      TreeNode(int val, TreeNode left, TreeNode right) {
+          this.val = val;
+          this.left = left;
+          this.right = right;
+      }
+ }
