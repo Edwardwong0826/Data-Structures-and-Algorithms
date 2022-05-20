@@ -1,9 +1,12 @@
 package com.wong;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        // write your code here
         System.out.println("HelloWorld!!!");
 
         int[] nums = {1,1,2};
@@ -11,6 +14,7 @@ public class Main {
         System.out.println(removeDuplicates(nums));
         System.out.println(removeElement(nums2,3));
     }
+
 
     // Leetcode question and submitted solution
     // Question 26 Remove Duplicates from Sorted Array
@@ -84,6 +88,28 @@ public class Main {
 
     }
 
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(result, candidates, target, new ArrayList<>(), 0);
+        return result;
+    }
+
+    private static void backtrack(List<List<Integer>> result, int[] candidates, int target, List<Integer> prefix, int startAt) {
+        if (target < 0) {
+            return;
+        }
+        if (target == 0) {
+            result.add(new ArrayList<>(prefix));
+        } else {
+            for (int i = startAt; i < candidates.length; i++) {
+                prefix.add(candidates[i]);
+                // todo bug: do not start at i + 1, because we can reuse same elements
+                backtrack(result, candidates, target - candidates[i], prefix, i);
+                prefix.remove(prefix.size() - 1);
+            }
+        }
+    }
+
     //Question 53 Maximum Subarray - Kadane's Algorithm - iterative DP
     public int maxSubArray(int[] nums) {
         int max = Integer.MIN_VALUE, sum = 0;
@@ -125,7 +151,7 @@ public class Main {
         nums[j] = temp;
     }
 
-    // Qustion 108 Convert Sorted Array to Binary Search Tree
+    // Question 108 Convert Sorted Array to Binary Search Tree
     public TreeNode sortedArrayToBST(int[] arr) {
 
         if(arr == null)
@@ -149,6 +175,31 @@ public class Main {
 
     }
 
+    // Question 136 Single number - use xor bitwise to find non duplicate digit
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for(int x: nums){
+            result = result ^ x;
+        }
+        return result;
+    }
+
+    // Question 167 Two Sum II - Input Array Is Sorted - binary search
+    public int[] twoSum(int[] numbers, int target) {
+        int start = 0, end = numbers.length-1;
+        while(start <= end){
+            int mid = start + (end-start)/2;
+            if(numbers[start] == (target - numbers[end]))
+                return new int[]{start + 1, end + 1};
+            else if (numbers[start] + numbers[end] < target) {
+                // 运用在这里 注意==的时候 是一步步走的 否则会错过
+                start = (numbers[mid] + numbers[end] < target) ? mid + 1 : start + 1;
+            }else{
+                end = (numbers[start] + numbers[mid] > target) ? mid + 1 : end - 1;
+            }
+        }
+        return new int[]{-1,-1};
+    }
 
 
     // Question 547 Number of Provinces - graph DFS
@@ -176,14 +227,14 @@ public class Main {
 }
 
 class TreeNode {
-      int val;
-      TreeNode left;
-      TreeNode right;
-      TreeNode() {}
-      TreeNode(int val) { this.val = val; }
-      TreeNode(int val, TreeNode left, TreeNode right) {
-          this.val = val;
-          this.left = left;
-          this.right = right;
-      }
- }
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
