@@ -14,6 +14,8 @@ public class Main {
         System.out.println(removeDuplicates(nums));
         System.out.println(removeElement(nums2,3));
         lengthOfLastWord("Hello World ");
+
+        System.out.println(isEvenNumber(1));
     }
 
     public static int lengthOfLastWord(String s)
@@ -37,6 +39,10 @@ public class Main {
         }
 
         return length;
+    }
+
+    public static boolean isEvenNumber(int n){
+        return (n & 1) == 0; // in java can use n & 1 and then evaluate is it equal to 0 to determine is even(or negative odd)
     }
 
 
@@ -286,12 +292,12 @@ public class Main {
     }
 
     // Question 547 Number of Provinces - graph DFS
-    public int findCircleNum(int[][] isConncted) {
-        int[] isVisited = new int[isConncted.length];
+    public int findCircleNum(int[][] isConnected) {
+        int[] isVisited = new int[isConnected.length];
         int count = 0;
-        for (int i = 0; i < isConncted.length; i++) {
+        for (int i = 0; i < isConnected.length; i++) {
             if (isVisited[i] == 0) {
-                dfs(isConncted, isVisited, i);
+                dfs(isConnected, isVisited, i);
                 count++;
             }
         }
