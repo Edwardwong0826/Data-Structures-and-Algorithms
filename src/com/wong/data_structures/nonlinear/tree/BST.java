@@ -1,7 +1,20 @@
 package com.wong.data_structures.nonlinear.tree;
 
+import com.sun.source.tree.Tree;
+
+import java.util.ArrayList;
+import java.util.List;
+
 class BST
 {
+    public static void inOrderTraverse(TreeNode root, List<Integer> pre){
+        if(root == null)
+            return;
+        inOrderTraverse(root.left,pre);
+        pre.add(root.val);
+        inOrderTraverse(root.right,pre);
+    }
+
     public TreeNode insertIntoBST(TreeNode root, int val) {
         if(root == null)
             return root = new TreeNode(val);
@@ -86,13 +99,20 @@ class BST
 
     }
 
-
     public static void main(String[] args)
     {
         //int[] arr = {4,2,7,1,3};
         int[] arr = {5,3,6,2,4,7};
+
         BST bst = new BST();
         TreeNode treeNode = null;
+
+        TreeNode node1 = new TreeNode(1);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node3 = new TreeNode(3);
+
+        node1.setRight(node2);
+        node2.setLeft(node3);
 
         for(int i = 0; i < arr.length; i++)
         {
@@ -106,6 +126,10 @@ class BST
         bst.deleteNode(treeNode,7);
         System.out.println(searchNode);
         System.out.println();
+
+        ArrayList<Integer> integers = new ArrayList<>();
+        inOrderTraverse(node1, integers);
+        System.out.println(integers);
 
 
     }

@@ -13,10 +13,58 @@ public class Main {
         int[] nums2 = {3,2,2,3};
         System.out.println(removeDuplicates(nums));
         System.out.println(removeElement(nums2,3));
+        lengthOfLastWord("Hello World ");
+    }
+
+    public static int lengthOfLastWord(String s)
+    {
+        s = s.trim();
+        char[] word = s.toCharArray();
+        int length = 0;
+
+        for(int i = s.length()-1; i >0; i--)
+        {
+            if(word[i] == ' ')
+            {
+                break;
+            }
+            else if(!(word[i] == ' '))
+            {
+                length++;
+            }
+
+
+        }
+
+        return length;
     }
 
 
-    // Leetcode question and submitted solution
+    // LeetCode question and submitted solution
+
+    // Question 14 Longest common prefix - string
+    public String longestCommonPrefix(String[] strs) {
+
+        String prefix = strs[0];
+        int i = 1;
+
+        while(i < strs.length){
+
+            while(strs[i].indexOf(prefix) != 0){ // indexOf return -1 if not found
+
+                prefix = prefix.substring(0, prefix.length()-1);
+
+            }
+
+            i++;
+
+        }
+
+        return prefix;
+
+    }
+
+
     // Question 26 Remove Duplicates from Sorted Array
     public static int removeDuplicates(int[] nums) {
 
@@ -151,6 +199,20 @@ public class Main {
         nums[j] = temp;
     }
 
+    // Question 94 Binary Tree inorder Traversal - DFS, tree
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> pre = new ArrayList<>();
+        preHelper(root,pre);
+        return pre;
+    }
+    public void preHelper(TreeNode root, List<Integer> pre) {
+        if(root==null) return;
+        preHelper(root.left,pre);
+        pre.add(root.val);
+        preHelper(root.right,pre);
+
+    }
+
     // Question 108 Convert Sorted Array to Binary Search Tree
     public TreeNode sortedArrayToBST(int[] arr) {
 
@@ -201,6 +263,27 @@ public class Main {
         return new int[]{-1,-1};
     }
 
+    // Question 222 Count Complete Tree Nodes - DFS, binary search
+    public int countNodes(TreeNode root) {
+
+        if(root != null)
+            return countNodes(root.left) + countNodes(root.right) + 1;
+
+        return 0;
+
+    }
+
+    //Question 231 Power of two - bit wise manipulation
+    public boolean isPowerOfTwo(int n) {
+        return n > 0 && (n & n - 1) == 0;
+    }
+
+    // Question 342 power of four - recursion
+    public boolean isPowerOfFour(int n) {
+        if(n <= 1)
+            return n == 1;
+        return n % 4 == 0 && isPowerOfFour(n / 4);
+    }
 
     // Question 547 Number of Provinces - graph DFS
     public int findCircleNum(int[][] isConncted) {
@@ -213,6 +296,20 @@ public class Main {
             }
         }
         return count;
+    }
+
+    // Question 1295 Find Numbers with Even Number of Digits
+    public int findNumbers(int[] nums) {
+        int result = 0;
+
+        for(int i = 0 ; i < nums.length ; i++){
+
+            int count = (int)Math.log10(nums[i]) + 1; //example (234 log 10 + 1) = ( 2 + 1 ) = 3 - number of digit
+
+            if(count % 2 == 0) result++;
+        }
+
+        return result;
     }
 
     public void dfs(int[][] isConncted, int[] isVisited, int i) {
