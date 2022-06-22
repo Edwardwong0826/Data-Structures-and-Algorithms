@@ -1,6 +1,8 @@
 package com.wong;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Main {
@@ -16,6 +18,20 @@ public class Main {
         lengthOfLastWord("Hello World ");
 
         System.out.println(isEvenNumber(1));
+
+
+
+
+        ListNode node4 = new ListNode(3);
+        ListNode node3 = new ListNode(1,node4);
+        ListNode node2 = new ListNode(2,node3);
+        ListNode node1 = new ListNode(4,node2);
+
+        Main main = new Main();
+        ListNode node = main.sortList(node1);
+        System.out.println(node);
+
+
     }
 
     public static int lengthOfLastWord(String s)
@@ -306,6 +322,120 @@ public class Main {
         return result;
     }
 
+    // Question 146 LRU Cache
+    class Node{
+        Node prev;
+        Node next;
+        int key;
+        int value;
+        public Node(int key,int value){
+            this.key=key;
+            this.value=value;
+        }
+    }
+    class LRUCache {
+
+        HashMap<Integer,Node> map=new HashMap<>();
+        Node head=new Node(0,0);
+        Node tail=new Node(0,0);
+        int capacity;
+
+        public LRUCache(int capacity) {
+            this.capacity=capacity;
+            head.next=tail;
+            tail.prev=head;
+        }
+
+        public int get(int key) {
+            if(map.containsKey(key)){
+                Node node=map.get(key);
+                delete(node);
+                insert(node);
+                return node.value;
+            }
+            else{
+                return -1;
+            }
+        }
+
+        public void put(int key, int value) {
+            if(map.containsKey(key)){
+                delete(map.get(key));
+            }
+            if(map.size()>=capacity){
+                delete(tail.prev);
+            }
+            insert(new Node(key,value));
+        }
+        public void insert(Node node){
+            map.put(node.key,node);
+            Node headNext=head.next;
+            head.next=node;
+            node.prev=head;
+            headNext.prev=node;
+            node.next=headNext;
+        }
+        public void delete(Node node){
+            map.remove(node.key);
+            node.prev.next=node.next;
+            node.next.prev=node.prev;
+        }
+    }
+
+    // Question 148 Sort List - Two pointers, Divide and Conquer, Sorting, Merge Sort
+    public ListNode sortList(ListNode head)
+    {
+        if (head == null || head.next == null)
+            return head;
+
+        // step 1. cut the list to two halves
+        ListNode prev = null, slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        prev.next = null;
+
+        // step 2. sort each half
+        ListNode l1 = sortList(head);
+        ListNode l2 = sortList(slow);
+
+        // step 3. merge l1 and l2
+        return merge(l1, l2);
+    }
+
+    ListNode merge(ListNode l1, ListNode l2)
+    {
+        ListNode l = new ListNode(0);
+        ListNode p = l;
+
+        while (l1 != null && l2 != null)
+        {
+            if (l1.val < l2.val)
+            {
+                p.next = l1;
+                l1 = l1.next;
+            }
+            else
+            {
+                p.next = l2;
+                l2 = l2.next;
+            }
+            p = p.next;
+        }
+
+        if (l1 != null)
+            p.next = l1;
+
+        if (l2 != null)
+            p.next = l2;
+
+        return l.next;
+    }
+
     // Question 167 Two Sum II - Input Array Is Sorted - binary search
     public int[] twoSum(int[] numbers, int target) {
         int start = 0, end = numbers.length-1;
@@ -409,6 +539,29 @@ public class Main {
 
     }
 
+    // Question 543 Diameter of Binary Tree - Binary Tree, DFS
+    int max=0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+
+        maxDepth(root);
+        return max;
+
+    }
+
+    private int maxDepth(TreeNode root){
+        if(root == null)
+            return 0;
+
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+
+        max = Math.max(max, left+right);
+
+        return Math.max(left, right)+1;
+
+    }
+
     // Question 547 Number of Provinces - graph DFS
     public int findCircleNum(int[][] isConnected) {
         int[] isVisited = new int[isConnected.length];
@@ -443,7 +596,67 @@ public class Main {
         return false;
     }
 
-    // Largest Number At Least Twice of Others
+    // Question 680 Valid Palindrome II
+    public boolean validPalindrome(String s)
+    {
+        int i = 0;
+        int j = s.length()-1;
+        while(i < j)
+        {
+            if(s.charAt(i) != s.charAt(j))
+            {
+                return isPalindrome(s, i+1, j) || isPalindrome(s, i, j-1);
+            }
+            i++;
+            j--;
+        }
+        return true;
+
+    }
+
+    private boolean isPalindrome(String s, int i, int j)
+    {
+        while (i < j)
+        {
+            if (s.charAt(i) != s.charAt(j))
+            {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    // Question 704 Binary Search - Binary Search
+    public int search(int[] nums, int target)
+    {
+        return binarySearch(nums, target, 0, nums.length-1);
+    }
+
+    int binarySearch(int[]nums, int target, int left, int right )
+    {
+
+        if(left > right)
+            return -1;
+
+        int mid = (left + right) / 2;
+
+        if(target == nums[mid])
+        {
+            return mid;
+        }
+
+        if(nums[mid] > target)
+        {
+            return binarySearch(nums, target, left, mid-1);
+        }
+
+        return binarySearch(nums, target, mid+1, right);
+    }
+
+
+    // Question 747 Largest Number At Least Twice of Others - Array, Sorting
     public int dominantIndex(int[] nums) {
 
         if(nums.length == 1)
@@ -513,6 +726,14 @@ public class Main {
     }
 
 }
+
+ class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+  }
 
 class TreeNode {
     int val;
