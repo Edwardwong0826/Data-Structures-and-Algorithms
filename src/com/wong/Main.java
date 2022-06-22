@@ -70,8 +70,21 @@ public class Main {
 
     }
 
+    // Question 24 Swap Nodes in Paris - Linked List, Recursion
+//    public ListNode swapPairs(ListNode head) {
+//
+//        if ((head == null)||(head.next == null))
+//            return head;
+//
+//        ListNode node = head.next;
+//        head.next = swapPairs(head.next.next);
+//        node.next = head;
+//
+//        return node;
+//    }
 
-    // Question 26 Remove Duplicates from Sorted Array
+
+    // Question 26 Remove Duplicates from Sorted Array - String
     public static int removeDuplicates(int[] nums) {
 
         int i = nums.length > 0 ? 1 : 0;
@@ -82,7 +95,7 @@ public class Main {
 
     }
 
-    //Question 27 Remove Element
+    //Question 27 Remove Element - String
     public static int removeElement(int[] nums, int val) {
         int i = 0;
 
@@ -219,7 +232,48 @@ public class Main {
 
     }
 
-    // Question 108 Convert Sorted Array to Binary Search Tree
+    // Question 98 Validate Binary Search Tree
+    public boolean isValidBST(TreeNode root)
+    {
+        return search(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public boolean search(TreeNode root, long minVal, long maxVal)
+    {
+        if(root == null)
+            return true;
+
+        if(root.val <= minVal)
+            return false;
+
+        if(root.val >= maxVal)
+            return false;
+
+        return search(root.left, minVal, root.val) && search(root.right, root.val, maxVal);
+    }
+
+    // Question 105 Construct Binary Tree from Preorder and Inorder Traversal - Binary Tree
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return helper(0, 0, inorder.length - 1, preorder, inorder);
+    }
+
+    public TreeNode helper(int preStart, int inStart, int inEnd, int[] preorder, int[] inorder) {
+        if (preStart > preorder.length - 1 || inStart > inEnd) {
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[preStart]);
+        int inIndex = 0; // Index of current root in inorder
+        for (int i = inStart; i <= inEnd; i++) {
+            if (inorder[i] == root.val) {
+                inIndex = i;
+            }
+        }
+        root.left = helper(preStart + 1, inStart, inIndex - 1, preorder, inorder);
+        root.right = helper(preStart + inIndex - inStart + 1, inIndex + 1, inEnd, preorder, inorder);
+        return root;
+    }
+
+    // Question 108 Convert Sorted Array to Binary Search Tree - BST
     public TreeNode sortedArrayToBST(int[] arr) {
 
         if(arr == null)
@@ -279,9 +333,52 @@ public class Main {
 
     }
 
-    //Question 231 Power of two - bit wise manipulation
+    // Question 230 Kth Smallest Element in a BST - BST, DFS
+    public int kthSmallest(TreeNode root, int k)
+    {
+        int [] count = new int[]{0};
+        int [] result = new int[]{0};
+        findSmallest(root,k,count,result);
+        return result[0];
+    }
+
+    public void findSmallest(TreeNode root, int k, int[] count, int[] result)
+    {
+        if(root == null)
+            return;
+
+        findSmallest(root.left, k, count, result);
+
+        count[0]++;
+        if(count[0] == k)
+        {
+            result[0] = root.val;
+
+        }
+
+        findSmallest(root.right, k, count, result);
+
+    }
+
+    // Question 231 Power of two - bit wise manipulation
     public boolean isPowerOfTwo(int n) {
         return n > 0 && (n & n - 1) == 0;
+    }
+
+    // Question 236 Lowest Common Ancestor of a Binary Tree - Binary Tree, DFS
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+        if(root == null || root == p || root == q)
+            return root;
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if(left != null && right != null)
+            return root;
+        else
+            return left != null? left : right;
+
     }
 
     // Question 342 power of four - recursion
@@ -289,6 +386,27 @@ public class Main {
         if(n <= 1)
             return n == 1;
         return n % 4 == 0 && isPowerOfFour(n / 4);
+    }
+
+    // Question 344 Reverse String - String, Recursion
+    public void reverseString(char[] s) {
+        recursion(0, s.length-1, s);
+
+    }
+
+    private static void recursion(int i, int j, char[] s) {
+
+        if(i > j || s == null)
+            return;
+
+        char temp = s[j];
+
+        s[j] = s[i];
+        s[i] = temp;
+
+        recursion(i+1, j-1, s);
+
+
     }
 
     // Question 547 Number of Provinces - graph DFS
@@ -302,6 +420,73 @@ public class Main {
             }
         }
         return count;
+    }
+
+    // Question 567 Permutation in String
+    public boolean checkInclusion(String s1, String s2) {
+        int len1 = s1.length(), len2 = s2.length();
+        if (len1 > len2) return false;
+
+        int[] count = new int[26];
+        for (int i = 0; i < len1; i++) {
+            count[s1.charAt(i) - 'a']++;
+            count[s2.charAt(i) - 'a']--;
+        }
+        if (allZero(count)) return true;
+
+        for (int i = len1; i < len2; i++) {
+            count[s2.charAt(i) - 'a']--;
+            count[s2.charAt(i - len1) - 'a']++;
+            if (allZero(count)) return true;
+        }
+
+        return false;
+    }
+
+    // Largest Number At Least Twice of Others
+    public int dominantIndex(int[] nums) {
+
+        if(nums.length == 1)
+            return 0;
+
+        int i = 0;
+        int tmp = 0;
+        int tmp2 = 0;
+
+        for(int k=0; k<nums.length;k++){
+
+            if(tmp < nums[k])
+            {
+                tmp = nums[k];
+                i = k;
+            }
+
+        }
+
+        for(int l=0; l<nums.length;l++){
+
+            if(tmp2 < nums[l] && nums[l] != nums[i] )
+            {
+                tmp2 = nums[l];
+            }
+        }
+
+
+        if( tmp >= (tmp2 * 2) )
+        {
+            return i;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    private boolean allZero(int[] count) {
+        for (int i = 0; i < 26; i++) {
+            if (count[i] != 0) return false;
+        }
+        return true;
     }
 
     // Question 1295 Find Numbers with Even Number of Digits
