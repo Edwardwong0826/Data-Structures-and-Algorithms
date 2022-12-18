@@ -1,39 +1,41 @@
 package com.wong;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
         // write your code here
-        System.out.println("HelloWorld!!!");
+//        System.out.println("HelloWorld!!!");
+//
+//        int[] nums = {1,1,2};
+//        int[] nums2 = {3,2,2,3};
+//        System.out.println(removeDuplicates(nums));
+//        System.out.println(removeElement(nums2,3));
+//        lengthOfLastWord("Hello World ");
+//
+//        System.out.println(isEvenNumber(1));
+//
+//
+//        ListNode node4 = new ListNode(3);
+//        ListNode node3 = new ListNode(1,node4);
+//        ListNode node2 = new ListNode(2,node3);
+//        ListNode node1 = new ListNode(4,node2);
+//
+//        Main main = new Main();
+//        ListNode node = main.sortList(node1);
+//        System.out.println(node);
 
-        int[] nums = {1,1,2};
-        int[] nums2 = {3,2,2,3};
-        System.out.println(removeDuplicates(nums));
-        System.out.println(removeElement(nums2,3));
-        lengthOfLastWord("Hello World ");
 
-        System.out.println(isEvenNumber(1));
-
-
-
-
-        ListNode node4 = new ListNode(3);
-        ListNode node3 = new ListNode(1,node4);
-        ListNode node2 = new ListNode(2,node3);
-        ListNode node1 = new ListNode(4,node2);
-
-        Main main = new Main();
-        ListNode node = main.sortList(node1);
-        System.out.println(node);
 
 
     }
 
+
+    // LeetCode question and submitted solution
+
+    // Question 58 Length of Last Word
     public static int lengthOfLastWord(String s)
     {
         s = s.trim();
@@ -62,7 +64,7 @@ public class Main {
     }
 
 
-    // LeetCode question and submitted solution
+
 
     // Question 14 Longest common prefix - string
     public String longestCommonPrefix(String[] strs) {
@@ -84,6 +86,41 @@ public class Main {
 
         return prefix;
 
+    }
+
+    // Question 17 Letter Combinations of a Phone Number - BFS solution
+    public List<String> letterCombinations() {
+
+        String digits = "23";
+
+        List<String> result = new ArrayList<>();
+        if (digits == null || digits.length() == 0) {
+            return result;
+        }
+
+        String[] letters = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        result.add("");
+
+
+        for(char digit : digits.toCharArray())
+        {
+
+            String currentLetter = letters[digit-'2'];
+            List<String> newResult = new ArrayList<>();
+
+            for(String item : result)
+            {
+                for(char character: currentLetter.toCharArray() )
+                {
+                    newResult.add(item + character);
+                }
+            }
+
+            result = newResult;
+
+        }
+
+        return result;
     }
 
     // Question 24 Swap Nodes in Paris - Linked List, Recursion
@@ -111,7 +148,7 @@ public class Main {
 
     }
 
-    //Question 27 Remove Element - String
+    // Question 27 Remove Element - String
     public static int removeElement(int[] nums, int val) {
         int i = 0;
 
@@ -123,7 +160,18 @@ public class Main {
         return i;
     }
 
-    // Qustion 34 Find First and Last Position of Element in Sorted Array - binary search and array
+    // Question 28 Find the Index of the First Occurrence in a String
+    public int strStr(String haystack, String needle) {
+
+        if(haystack.contains(needle)){
+            return haystack.indexOf(needle);
+        }
+        else{
+            return -1;
+        }
+    }
+
+    // Question 34 Find First and Last Position of Element in Sorted Array - binary search and array
     public int[] searchRange(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
@@ -171,6 +219,7 @@ public class Main {
 
     }
 
+    // Question 39 Combination Sum - back track solution
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> result = new ArrayList<>();
         backtrack(result, candidates, target, new ArrayList<>(), 0);
@@ -193,7 +242,28 @@ public class Main {
         }
     }
 
-    //Question 53 Maximum Subarray - Kadane's Algorithm - iterative DP
+    // Question 49 Group Anagrams
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        if (strs == null || strs.length == 0) return new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+
+        for (String s : strs) {
+
+            char[] ca = s.toCharArray();
+            Arrays.sort(ca);
+            String keyStr = String.valueOf(ca);
+
+            if (!map.containsKey(keyStr))
+                map.put(keyStr, new ArrayList<>());
+
+            map.get(keyStr).add(s);
+        }
+        return new ArrayList<>(map.values());
+
+    }
+
+    // Question 53 Maximum SubArray - Kadane's Algorithm - iterative DP
     public int maxSubArray(int[] nums) {
         int max = Integer.MIN_VALUE, sum = 0;
         for(int i=0; i< nums.length; i++){
@@ -313,13 +383,71 @@ public class Main {
 
     }
 
-    // Question 136 Single number - use xor bitwise to find non duplicate digit
+    // Question 128 Longest Consecutive Sequence
+    public int longestConsecutive()
+    {
+        int nums[] = {100,4,200,1,3,2};
+        int max = 0;
+
+        Set<Integer> set = new HashSet<Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            set.add(nums[i]);
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            int count = 1;
+
+            // look left
+            int num = nums[i];
+            while (set.contains(--num)) {
+                count++;
+                set.remove(num);
+            }
+
+            // look right
+            num = nums[i];
+            while (set.contains(++num)) {
+                count++;
+                set.remove(num);
+            }
+
+            max = Math.max(max, count);
+        }
+
+        return max;
+
+    }
+
+    // Question 136 Single number - use xor bitwise to find non-duplicate digit
     public int singleNumber(int[] nums) {
         int result = 0;
         for(int x: nums){
             result = result ^ x;
         }
         return result;
+    }
+
+    // Question 139 Word Break - Hash Table and Memoization solution
+    HashMap<String, Boolean> map = new HashMap<>();
+    public boolean wordBreak(String s, List<String> wordDict) {
+
+        if(wordDict.contains(s))
+            return true;
+        if(map.containsKey(s))
+            return map.get(s);
+
+        for(int i=0;i<s.length();i++) {
+            String prefix = s.substring(0,i+1);
+            String suffix = s.substring(i+1);
+
+            if(wordDict.contains(prefix) && wordBreak(suffix, wordDict)) {
+                map.put(s, true);
+                return true;
+            }
+        }
+
+        map.put(s, false);
+        return false;
     }
 
     // Question 146 LRU Cache
@@ -434,6 +562,21 @@ public class Main {
             p.next = l2;
 
         return l.next;
+    }
+
+    // Question 151 Reverse Words in String
+    public String reverseWords(String s) {
+
+        String[] word = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for(int i = word.length-1; i>=0; i--){
+            if(!word[i].equals("")){
+                sb.append(word[i]).append(" ");
+            }
+        }
+
+        return sb.toString().trim();
+
     }
 
     // Question 167 Two Sum II - Input Array Is Sorted - binary search
