@@ -2,6 +2,7 @@ package com.wong;
 
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -27,6 +28,23 @@ public class Main {
 //        ListNode node = main.sortList(node1);
 //        System.out.println(node);
 
+
+//        String number = String.valueOf(n);
+//
+//        char[] digits1 = number.toCharArray()
+    }
+
+    // count integer length
+    public static int countLength(int n){
+
+        int count = 0;
+
+        while(n != 0){
+            n = n / 10;
+            count++;
+        }
+
+        return count;
     }
 
 
@@ -157,6 +175,61 @@ public class Main {
         return sb.toString().trim();
 
     }
+
+    // Question 242 Valid Anagram
+    public static boolean isAnagram(String s, String t) {
+
+        if (s.length() != t.length()) {
+            return false;
+        }
+        Map<Character, Integer> counter = new HashMap<>();
+        for (Character c : s.toCharArray()) {
+            counter.put(c, counter.getOrDefault(c, 0) + 1);
+        }
+        for (Character c : t.toCharArray()) {
+            if (!counter.containsKey(c) || counter.get(c) == 0) {
+                return false;
+            }
+            counter.put(c, counter.getOrDefault(c, 0) - 1);
+        }
+        for (Character c : counter.keySet()) {
+            if (counter.get(c) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Question 361 Remove Duplicate Letters
+    // need to make sure the result is the smallest in lexicographical order
+    public static String removeDuplicateLetters(String s) {
+
+
+        int[] lastIndex = new int[26];
+        for (int i = 0; i < s.length(); i++){
+            lastIndex[s.charAt(i) - 'a'] = i; // track the lastIndex of character presence
+        }
+
+        boolean[] seen = new boolean[26]; // keep track seen
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            int cur = s.charAt(i) - 'a';
+            if (seen[cur]) continue; // if seen continue as we need to pick one char only
+            while (!stack.isEmpty() && stack.peek() > cur && i < lastIndex[stack.peek()]){
+                seen[stack.pop()] = false; // pop out and mark unseen
+            }
+            stack.push(cur); // add into stack
+            seen[cur] = true; // mark seen
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty())
+            sb.append((char) (stack.pop() + 'a'));
+        return sb.reverse().toString();
+
+    }
+
 
     // Question 567 Permutation in String
     public static boolean checkInclusion(String s1, String s2) {
@@ -378,6 +451,29 @@ public class Main {
         return max;
     }
 
+    // Question 66 Plus One
+    public int[] plusOne() {
+
+        int[] digits = {9,9,9,9};
+        for (int i = digits.length - 1; i >= 0; i--) {
+            if (digits[i] < 9) {
+
+                digits[i]++;
+                return digits;
+
+            }
+
+            digits[i] = 0;
+
+        }
+
+        digits = new int[digits.length+1];
+        digits[0] = 1;
+
+        return digits;
+
+    }
+
     // Question 128 Longest Consecutive Sequence
     public static int longestConsecutive()
     {
@@ -552,8 +648,29 @@ public class Main {
         }
     }
 
-    // Sorting category problem
+    // Question 989 Add to Array-Form of Integer
+    public static List<Integer> addToArrayForm(int[] num, int k) {
 
+        List<Integer> result = new LinkedList<>();
+
+        for (int i = num.length - 1; i >= 0; --i)
+        {
+            result.add(0, (num[i] + k) % 10);
+            k = (num[i] + k) / 10;
+        }
+
+        while (k > 0)
+        {
+            result.add(0, k % 10);
+            k /= 10;
+        }
+
+        return result;
+
+    }
+
+
+    // Sorting category problem
 
     // Question 148 Insertion Sort List - Linked List, Two Pointers
     public ListNode insertionSortList(ListNode head) {
@@ -679,8 +796,127 @@ public class Main {
 
     }
 
+    // Hash Table category problem
+
+    // Question 169 Majority Element
+    public static int majorityElement(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        Arrays.stream(nums).forEach(v -> {
+
+            if(map.containsKey(v)){
+                map.put(v, map.get(v) + 1);
+            }else{
+                map.put(v, 0);
+            }
+
+        } );
+
+        int max = map.get(nums[0]);
+        int result = nums[0];
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+
+            if(entry.getValue() > max){
+                max = entry.getValue();
+                result = entry.getKey();
+            }
+
+        }
+
+        return result;
+
+        // or sorting solution
+        // Arrays.sort(nums);
+        // return nums[nums.length/2];
+
+    }
+
+    // Question 146 LRU Cache
+    class Node{
+        Node prev;
+        Node next;
+        int key;
+        int value;
+        public Node(int key,int value){
+            this.key=key;
+            this.value=value;
+        }
+    }
+    class LRUCache {
+
+        HashMap<Integer,Node> map=new HashMap<>();
+        Node head=new Node(0,0);
+        Node tail=new Node(0,0);
+        int capacity;
+
+        public LRUCache(int capacity) {
+            this.capacity=capacity;
+            head.next=tail;
+            tail.prev=head;
+        }
+
+        public int get(int key) {
+            if(map.containsKey(key)){
+                Node node=map.get(key);
+                delete(node);
+                insert(node);
+                return node.value;
+            }
+            else{
+                return -1;
+            }
+        }
+
+        public void put(int key, int value) {
+            if(map.containsKey(key)){
+                delete(map.get(key));
+            }
+            if(map.size()>=capacity){
+                delete(tail.prev);
+            }
+            insert(new Node(key,value));
+        }
+        public void insert(Node node){
+            map.put(node.key,node);
+            Node headNext=head.next;
+            head.next=node;
+            node.prev=head;
+            headNext.prev=node;
+            node.next=headNext;
+        }
+        public void delete(Node node){
+            map.remove(node.key);
+            node.prev.next=node.next;
+            node.next.prev=node.prev;
+        }
+    }
 
     // Binary Tree, Binary Search Tree, Binary Search category problem
+
+    // Question 33 Search in Rotated Sorted Array - Binary Search
+    public static int searchRotatedSortArray(int[] nums, int target) {
+        int low = 0, high = nums.length - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (target == nums[mid])
+                return mid;
+            if (nums[mid] < nums[low]) {
+                // 6,7,0,1,2,3,4,5
+                if (target < nums[mid] || target >= nums[low])
+                    high = mid - 1;
+                else
+                    low = mid + 1;
+            } else {
+                // 2,3,4,5,6,7,0,1
+                if (target > nums[mid] || target < nums[low])
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+            }
+        }
+        return -1;
+    }
 
     // Question 94 Binary Tree inorder Traversal - DFS, tree
     public static List<Integer> inorderTraversal(TreeNode root) {
@@ -884,65 +1120,6 @@ public class Main {
         return node;
     }
 
-    // Question 146 LRU Cache
-    class Node{
-        Node prev;
-        Node next;
-        int key;
-        int value;
-        public Node(int key,int value){
-            this.key=key;
-            this.value=value;
-        }
-    }
-    class LRUCache {
-
-        HashMap<Integer,Node> map=new HashMap<>();
-        Node head=new Node(0,0);
-        Node tail=new Node(0,0);
-        int capacity;
-
-        public LRUCache(int capacity) {
-            this.capacity=capacity;
-            head.next=tail;
-            tail.prev=head;
-        }
-
-        public int get(int key) {
-            if(map.containsKey(key)){
-                Node node=map.get(key);
-                delete(node);
-                insert(node);
-                return node.value;
-            }
-            else{
-                return -1;
-            }
-        }
-
-        public void put(int key, int value) {
-            if(map.containsKey(key)){
-                delete(map.get(key));
-            }
-            if(map.size()>=capacity){
-                delete(tail.prev);
-            }
-            insert(new Node(key,value));
-        }
-        public void insert(Node node){
-            map.put(node.key,node);
-            Node headNext=head.next;
-            head.next=node;
-            node.prev=head;
-            headNext.prev=node;
-            node.next=headNext;
-        }
-        public void delete(Node node){
-            map.remove(node.key);
-            node.prev.next=node.next;
-            node.next.prev=node.prev;
-        }
-    }
 
     // Question 231 Power of two - bit wise manipulation
     public static boolean isPowerOfTwo(int n) {
@@ -954,6 +1131,35 @@ public class Main {
         if(n <= 1)
             return n == 1;
         return n % 4 == 0 && isPowerOfFour(n / 4);
+    }
+
+    // Question 318 Maximum Product of Word Lengths - Bit Manipulation, Hash Set
+    public int maxProduct(String[] words) {
+        int n = words.length;
+        int[] bitmask = new int[n];
+        int max = 0;
+
+        for(int i=0; i<n; i++) {
+            // Calculate bitmask for current word
+            for(int j=0; j<words[i].length(); j++) {
+                // index will be - for a -> 0, b -> 1, c -> 2 and so on
+                int index = words[i].charAt(j) - 'a';
+
+                // left shift 1 by index and OR it with the current bitmask
+                bitmask[i] |= (1 << index);
+            }
+
+            // Compare bitmask of current string with previous strings bitmask
+            for(int j=0; j<i; j++) {
+                /* If there is a 1 at the same index of current string {i} and {j},
+                then bitmask of i and j string will result in a number greater than 0,
+                else it will result in 0 */
+                if( (bitmask[i] & bitmask[j]) == 0 )
+                    max = Math.max(max, words[i].length()*words[j].length());
+            }
+        }
+
+        return max;
     }
 
     // Question 547 Number of Provinces - graph DFS
@@ -988,6 +1194,38 @@ public class Main {
             int count = (int)Math.log10(nums[i]) + 1; //example (234 log 10 + 1) = ( 2 + 1 ) = 3 - number of digit
 
             if(count % 2 == 0) result++;
+        }
+
+        return result;
+    }
+
+    // return smallest missing positive number
+    public static int missingPositive(){
+        int[] A = {1,3,6,4,1,2};
+        Arrays.sort(A);
+        HashSet<Integer> nums = new HashSet<>();
+
+        for(int i =0; i<A.length; i++){
+            if(!nums.contains(A[i])){
+                nums.add(A[i]);
+            }
+        }
+
+        int result = 0;
+        for(int j=0; j<A.length; j++){
+
+            int num = A[j];
+            if(A[j] < 0)
+            {
+                num = 1;
+            }else{
+                num++;
+            }
+
+            if( !(nums.contains(A[j]) && nums.contains(num)) ){
+                result = num;
+                break;
+            }
         }
 
         return result;
