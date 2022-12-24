@@ -27,11 +27,7 @@ public class Main {
 //        Main main = new Main();
 //        ListNode node = main.sortList(node1);
 //        System.out.println(node);
-
-
-//        String number = String.valueOf(n);
-//
-//        char[] digits1 = number.toCharArray()
+        
     }
 
     // count integer length
@@ -597,6 +593,34 @@ public class Main {
 
     }
 
+    // Question 347 Top K Frequent Elements
+    public static int[] topKFrequent(int[] nums, int k) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int n: nums){
+            map.put(n, map.getOrDefault(n,0)+1);
+        }
+
+        TreeMap<Integer, List<Integer>> freqMap = new TreeMap<>();
+        for(int num : map.keySet()){
+            int freq = map.get(num);
+            if(!freqMap.containsKey(freq)){
+                freqMap.put(freq, new LinkedList<>());
+            }
+            freqMap.get(freq).add(num);
+        }
+        List<Integer> result = new ArrayList<>();
+        while(result.size() < k){
+            Map.Entry<Integer, List<Integer>> entry = freqMap.pollLastEntry();
+            result.addAll(entry.getValue());
+        }
+
+        int[] res = result.stream().mapToInt(i->i).toArray();
+        return res;
+
+    }
+
     private static void recursion(int i, int j, char[] s) {
         if(i > j || s == null)
             return;
@@ -607,6 +631,19 @@ public class Main {
         s[i] = temp;
 
         recursion(i+1, j-1, s);
+    }
+
+    // Question 387 First Unique Character in String
+    public static int firstUniqChar(String s) {
+
+        for(char c : s.toCharArray()){
+            int index = s.indexOf(c);
+            int lastIndex = s.lastIndexOf(c);
+            if(index == lastIndex)
+                return index;
+        }
+        return -1;
+
     }
 
     // Question 747 Largest Number At Least Twice of Others - Array, Sorting
