@@ -27,7 +27,40 @@ public class Main {
 //        Main main = new Main();
 //        ListNode node = main.sortList(node1);
 //        System.out.println(node);
-        
+
+        String gfg = new String("Welcome to geeksforgeeks");
+        String gfg2 = new String("Welcome");
+
+        System.out.println(gfg.indexOf('e',2));
+        System.out.println(gfg.substring(1));
+        System.out.println(gfg2.substring(1,7));
+
+        boolean anagram = isAnagram("anagram", "nagaram");
+        System.out.println(anagram);
+
+
+        String str1 = "anagram";
+        String str2 = "nagaram";
+        HashMap<Character, Integer> hashMap = new HashMap<>();
+
+        char[] chars = str1.toCharArray();
+        char[] chars1 = str2.toCharArray();
+
+        System.out.println(chars[0]);
+        System.out.println(chars1[0]);
+
+        char c = str2.charAt(1);
+
+        System.out.println(str1.startsWith("ana"));
+
+        System.out.println(str2.contains("B"));
+
+        int[] a = {30,3};
+        int[] b = {30,4};
+
+        System.out.println(a[0] % a[1]);
+        System.out.println(b[0] % b[1]);
+
     }
 
     // count integer length
@@ -179,6 +212,7 @@ public class Main {
             return false;
         }
         Map<Character, Integer> counter = new HashMap<>();
+
         for (Character c : s.toCharArray()) {
             counter.put(c, counter.getOrDefault(c, 0) + 1);
         }
@@ -1244,6 +1278,82 @@ public class Main {
         }
     }
 
+
+    // Question Sort an Array - merge sort solution
+    public int[] sortArray(int[] arr)
+    {
+
+        if (arr == null || arr.length == 0) return arr;
+        int[] temp = new int[arr.length];
+        mergeSort(arr,0,arr.length-1, temp);
+
+        return arr;
+
+    }
+
+    public static void mergeSort(int[]arr, int left, int right, int[] temp) {
+
+        if (left < right)
+        {
+            int mid = (left + right) / 2;
+            mergeSort(arr, left, mid, temp);
+            mergeSort(arr, mid + 1, right, temp);
+            merge(arr, left, mid, right, temp);
+        }
+
+    }
+
+    public static void merge(int[] arr, int left, int mid, int right, int[] temp)
+    {
+        int i = left;  // init left index
+        int j = mid + 1; // init right index
+        int t = 0; // for temp array current index
+
+        // fill in both array data according rules to temp array
+        // until end of any one side of order array
+        while(i <= mid && j <= right)
+        {
+            if(arr[i] <= arr[j])
+            {
+                //temp[t++] = arr[i++];
+                temp[t] = arr[i];
+                t += 1;
+                i += 1;
+            }
+            else
+            {
+                //temp[t++] = arr[j++];
+                temp[t] = arr[j];
+                t += 1;
+                j += 1;
+            }
+        }
+
+        // copy remain array data to the temp
+        while( i <= mid)
+        {
+            temp[t] = arr[i];
+            t += 1;
+            i += 1;
+        }
+
+        while( j <= right)
+        {
+            temp[t] = arr[j];
+            t += 1;
+            j += 1;
+        }
+
+        // copy temp to arr
+        t = 0;
+        int tempLeft = left;
+        while(tempLeft <= right)
+        {
+            arr[tempLeft] = temp[t];
+            t += 1;
+            tempLeft +=1;
+        }
+    }
 
     // Question 1295 Find Numbers with Even Number of Digits
     public static int findNumbers(int[] nums) {
