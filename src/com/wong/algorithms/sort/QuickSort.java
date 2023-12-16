@@ -5,7 +5,7 @@ import java.util.List;
 
 public class QuickSort {
 
-    // Quicksort is a improvement for Bubblesort, it split data to 2 groups,
+    // Quicksort is an improvement for Bubblesort, it split data to 2 groups,
     // one of the group data will be smaller to other group, and will sort based on this two group using recursion
     public static void main(String[] args)
     {

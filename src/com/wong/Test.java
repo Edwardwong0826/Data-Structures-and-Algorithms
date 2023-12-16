@@ -1,18 +1,48 @@
 package com.wong;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 public class Test {
     public static void main(String[] args)
     {
+        System.out.println("first");
+        //System.out.println(removeDigit("-5958", '5'));
 
-        //System.out.println(twice(new int[]{1,0}));
-        String s1 = "ab";
-        String s2 = "eidbaooo";
+        List<String> list = new ArrayList<>();
+        list.add("code");
+        list.add("doce");
+        list.add("ecod");
+        list.add("framer");
+        list.add("frame");
 
-        HashMap<String,Integer> map = new HashMap<String, Integer>();
+        List<String> answer = new ArrayList<>();
 
+        List<String> duplicate = new ArrayList<>();
+
+        for(String s : list){
+            char[] chars = s.toCharArray();
+            Arrays.sort(chars);
+            String str = String.valueOf(chars);
+
+            if(!duplicate.contains(str)){
+                duplicate.add(str);
+                answer.add(s);
+            }
+        }
+
+        System.out.println(answer);
+    }
+
+    public static String removeDigit(String number, char digit){
+        ArrayList<String> digits = new ArrayList<>();
+        for (int i = 0; i < number.length(); i++) {
+            if (number.charAt(i) == digit) {
+                String stringWithoutDigit = number.substring(0, i) + number.substring(i + 1);
+                digits.add(stringWithoutDigit);
+            }
+        }
+        Collections.sort(digits);
+        return digits.get(digits.size() - 1);
 
     }
 
@@ -54,4 +84,45 @@ public class Test {
         }
 
     }
+
+    interface TimeProvider {
+        long getMillis();
+    }
+
+
+    public class CachingDataStructure {
+
+        private Map<String, TreeMap<Integer, String>> cache;
+        private int maxSize;
+        private TimeProvider timeProvider;
+
+        CachingDataStructure(TimeProvider timeProvider, int maxSize) {
+            this.timeProvider = timeProvider;
+            this.maxSize = maxSize;
+        }
+
+        public void put(String key, String value, long timeToLeaveInMilliseconds) {
+            cache.putIfAbsent(key, new TreeMap());
+            cache.get(key).put((int) timeToLeaveInMilliseconds, value);
+        }
+
+        public Optional<String> get(String key) {
+            TreeMap<Integer, String> treeMap = cache.getOrDefault(key, new TreeMap());
+            Map.Entry<Integer, String> entry = treeMap.floorEntry((int)timeProvider.getMillis());
+            String result;
+            if(entry == null){
+                result = "";
+            }
+            else {
+                result = entry.getValue();
+            }
+            return Optional.ofNullable(entry.getValue());
+        }
+
+        public int size() {
+            return maxSize;
+        }
+
+    }
+
 }

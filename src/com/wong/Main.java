@@ -1,39 +1,39 @@
 package com.wong;
 
-
 import java.util.*;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 public class Main {
 
     public static void main(String[] args) {
         // write your code here
-//        System.out.println("HelloWorld!!!");
-//
-//        int[] nums = {1,1,2};
-//        int[] nums2 = {3,2,2,3};
-//        System.out.println(removeDuplicates(nums));
-//        System.out.println(removeElement(nums2,3));
-//        lengthOfLastWord("Hello World ");
-//
-//        System.out.println(isEvenNumber(1));
-//
-//
-//        ListNode node4 = new ListNode(3);
-//        ListNode node3 = new ListNode(1,node4);
-//        ListNode node2 = new ListNode(2,node3);
-//        ListNode node1 = new ListNode(4,node2);
-//
-//        Main main = new Main();
-//        ListNode node = main.sortList(node1);
-//        System.out.println(node);
+        System.out.println("HelloWorld!!!");
+
+        int[] nums = {1,1,2};
+        int[] nums2 = {3,2,2,3};
+        System.out.println(removeDuplicates(nums));
+        System.out.println(removeElement(nums2,3));
+        lengthOfLastWord("Hello World ");
+
+        System.out.println(isEvenNumber(1));
+
+
+        ListNode node4 = new ListNode(3);
+        ListNode node3 = new ListNode(1,node4);
+        ListNode node2 = new ListNode(2,node3);
+        ListNode node1 = new ListNode(4,node2);
+
+        Main main = new Main();
+        ListNode node = main.sortList(node1);
+        System.out.println(node);
+
 
         String gfg = new String("Welcome to geeksforgeeks");
         String gfg2 = new String("Welcome");
 
-        System.out.println(gfg.indexOf('e',2));
+        System.out.println(gfg.indexOf('e', 2));
         System.out.println(gfg.substring(1));
-        System.out.println(gfg2.substring(1,7));
+        System.out.println(gfg2.substring(1, 7));
 
         boolean anagram = isAnagram("anagram", "nagaram");
         System.out.println(anagram);
@@ -55,12 +55,121 @@ public class Main {
 
         System.out.println(str2.contains("B"));
 
-        int[] a = {30,3};
-        int[] b = {30,4};
+        int[] a = {30, 3};
+        int[] b = {30, 4};
 
         System.out.println(a[0] % a[1]);
         System.out.println(b[0] % b[1]);
 
+
+        int []test2 = {100};
+
+        int[] result = solution("B", test2);
+
+        System.out.println(Arrays.toString(result));
+
+
+        int []test1 = {-10000,-4654,-6,-91,1011,-100,84,-22,0,1,473,10000};
+
+        long count = Arrays.stream(test1).filter(n -> Math.abs(n) < 10).count();
+        System.out.println(count);
+
+        System.out.println(findMaxSingleDigit(test1));
+        System.out.println();
+
+
+        int digit[] = {1,3,4,2,6};
+        //List<Integer> num = new ArrayList<>(Arrays.asList(nums));
+        List<Integer> num = Arrays.stream(digit).boxed().toList();
+
+        System.out.println(digit.length);
+        System.out.println(digit[4]);
+        System.out.println();
+
+        System.out.println(num.size());
+        System.out.println(num.get(4));
+
+        Set<Integer> set = new HashSet<>();
+        set.add(1);
+
+
+        findLHS(new int[]{1,3,2,2,5,2,3,7});
+
+        String[] str = new String[]{"flower","flow","flight"};
+
+        longestCommonPrefix(str);
+
+    }
+
+
+    public static int findLHS(int[] nums) {
+
+        HashMap < Integer, Integer > map = new HashMap <> ();
+        int result = 0;
+
+        for (int num: nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        for (int key: map.keySet()) {
+            if (map.containsKey(key + 1))
+                result = Math.max(result, map.get(key) + map.get(key + 1));
+        }
+
+        return result;
+
+    }
+
+
+    public static int findMaxSingleDigit(int arr[]) {
+
+        int result = 0;
+        for (int i : arr) {
+
+            if (i > -10 && i < 10) {
+
+                if (i > result) {
+                    result = i;
+                }
+            }
+        }
+
+        return  result;
+
+    }
+    public static int[] solution(String R, int[] V){
+
+        int aInitial = 0;
+        int bInitial = 0;
+
+        int aBalance = 0;
+        int bBalance = 0;
+
+        for (int i = 0; i < R.length(); i++) {
+            char val = R.charAt(i);
+            int amount = V[i];
+
+            if (val == 'A') {
+                int outstanding = bBalance - amount;
+                if (outstanding < 0) {
+                    bInitial = bInitial + Math.abs(outstanding);
+                    bBalance = 0;
+                }
+                aBalance = aBalance + amount;
+            } else if (val == 'B') {
+
+                int outstanding = aBalance - amount;
+                if (outstanding < 0) {
+                    aInitial = aInitial + Math.abs(outstanding);
+                    aBalance = 0;
+                }
+                bBalance = bBalance + amount;
+            }
+
+        }
+
+        int[] result = {aInitial, bInitial};
+
+        return result;
     }
 
     // count integer length
@@ -213,16 +322,16 @@ public class Main {
         }
         Map<Character, Integer> counter = new HashMap<>();
 
-        for (Character c : s.toCharArray()) {
+        for (char c : s.toCharArray()) {
             counter.put(c, counter.getOrDefault(c, 0) + 1);
         }
-        for (Character c : t.toCharArray()) {
+        for (char c : t.toCharArray()) {
             if (!counter.containsKey(c) || counter.get(c) == 0) {
                 return false;
             }
             counter.put(c, counter.getOrDefault(c, 0) - 1);
         }
-        for (Character c : counter.keySet()) {
+        for (char c : counter.keySet()) {
             if (counter.get(c) != 0) {
                 return false;
             }
@@ -319,6 +428,21 @@ public class Main {
             j--;
         }
         return true;
+    }
+
+    // Question 2351 First Letter to Appear Twice
+    public static char repeatedCharacter(String s){
+        Map<Character, Integer> counter = new HashMap<>();
+
+        for(char c : s.toCharArray()){
+            counter.put(c, counter.getOrDefault(c, 0)+1);
+            if(counter.get(c) == 2){
+                return c;
+            }
+        }
+
+        throw new IllegalArgumentException("Wrong String Input");
+
     }
 
 
@@ -920,9 +1044,19 @@ public class Main {
 
         return result;
 
+
+        // for (int num: nums) {
+        //     map.put(num, map.getOrDefault(num, 0) + 1);
+        // }
+
+
+        // return Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
+
         // or sorting solution
         // Arrays.sort(nums);
         // return nums[nums.length/2];
+
+
 
     }
 
