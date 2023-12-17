@@ -80,14 +80,14 @@ public class Main {
 
         int digit[] = {1,3,4,2,6};
         //List<Integer> num = new ArrayList<>(Arrays.asList(nums));
-        List<Integer> num = Arrays.stream(digit).boxed().toList();
+        //List<Integer> num = Arrays.stream(digit).boxed().toList();
 
         System.out.println(digit.length);
         System.out.println(digit[4]);
         System.out.println();
 
-        System.out.println(num.size());
-        System.out.println(num.get(4));
+        //System.out.println(num.size());
+        //System.out.println(num.get(4));
 
         Set<Integer> set = new HashSet<>();
         set.add(1);
@@ -98,6 +98,9 @@ public class Main {
         String[] str = new String[]{"flower","flow","flight"};
 
         longestCommonPrefix(str);
+
+        String reverse = reverseCharacter("cat");
+        System.out.println(reverse);
 
     }
 
@@ -299,7 +302,7 @@ public class Main {
         return false;
     }
 
-    // Quetion 151 Reverse Words in String
+    // Question 151 Reverse Words in String
     public static String reverseWords(String s) {
 
         String[] word = s.split(" ");
@@ -312,6 +315,16 @@ public class Main {
 
         return sb.toString().trim();
 
+    }
+
+    public static String reverseCharacter(String s){
+        String result = "";
+
+        for(int i=s.length()-1; i>=0; i--){
+            result = result + s.charAt(i);
+        }
+
+        return result;
     }
 
     // Question 242 Valid Anagram
