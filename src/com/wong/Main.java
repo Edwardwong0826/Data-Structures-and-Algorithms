@@ -2,11 +2,28 @@ package com.wong;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
     public static void main(String[] args) {
         // write your code here
+
+
+        // Intellij Idea debug tips
+        // there is trace current stream chain that can debug stream by flow
+        List<Integer> collect = Stream.of(1, 2, 3, 4, 5, 6).filter(f -> f > 3).map(m -> m * 2).collect(Collectors.toList());
+
+        // step into, will go into only our source code, skip JDK library source code
+
+        // force step into, will go into JDK library source code as well
+
+        // we can use force return to terminate the application, this is immediately execute return, so it won't excute remaning steps
+
+        // don't use stop in prodution, it only stops the debug and  will continue to execute remaining code flow
+
+        // in debug mode, we can use reset frame to exit current stack frame and back to previous stack frame so that we can rerun again
+
         System.out.println("HelloWorld!!!");
 
         int[] nums = {1,1,2};
