@@ -1,12 +1,15 @@
 package com.wong;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
 
-    public static void main(String[] args) {
+    static Integer count = 0;
+
+    public static void main(String[] args) throws InterruptedException {
         // write your code here
 
 
@@ -88,8 +91,8 @@ public class Main {
 
         int []test1 = {-10000,-4654,-6,-91,1011,-100,84,-22,0,1,473,10000};
 
-        long count = Arrays.stream(test1).filter(n -> Math.abs(n) < 10).count();
-        System.out.println(count);
+        AtomicLong countAtomic = new AtomicLong(Arrays.stream(test1).filter(n -> Math.abs(n) < 10).count());
+        System.out.println(countAtomic.get());
 
         System.out.println(findMaxSingleDigit(test1));
         System.out.println();
@@ -118,6 +121,30 @@ public class Main {
 
         String reverse = reverseCharacter("cat");
         System.out.println(reverse);
+
+        System.out.println(1 << 2);
+
+
+        Thread thread = new Thread( () -> {
+            for(int i = 0; i < 10000; i++){
+                synchronized (count) {
+                    count++;
+                }
+            }
+        });
+
+        thread.start();
+
+        for(int i = 0; i < 10000; i++){
+            synchronized (count) {
+                count++ ;
+            }
+        }
+
+        thread.join();
+
+        System.out.println(count);
+
 
     }
 
